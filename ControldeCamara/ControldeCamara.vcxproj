@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="math3d.h" />
+    <ClInclude Include="util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment_shader.glsl" />
+    <None Include="vertex_shader.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{744EC2C7-0B6E-4FEA-ABA0-5786AE73B2EA}</ProjectGuid>
     <RootNamespace>ControldeCamara</RootNamespace>
@@ -115,18 +127,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="F:\ControlDeCamara\camera.h" />
-    <ClInclude Include="F:\ControlDeCamara\math3d.h" />
-    <ClInclude Include="F:\ControlDeCamara\util.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="F:\ControlDeCamara\fragment_shader.glsl" />
-    <None Include="F:\ControlDeCamara\vertex_shader.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="F:\ControlDeCamara\main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
