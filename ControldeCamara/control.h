@@ -54,7 +54,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
-void mouse_callback(GLFWwindow* window, double xPos, double yPos)
+void cursor_pos_callback(GLFWwindow* window, double xPos, double yPos)
 {
 	CameraInfo* cameraInfo = (CameraInfo*)glfwGetWindowUserPointer(window);
 
