@@ -4,7 +4,7 @@
 
 #include "math3d.h"
 
-const GLfloat SPEED = 0.1f;
+const GLdouble SPEEDK = 0.1f, SPEEDC = 0.0025f;
 
 struct CameraInfo
 {

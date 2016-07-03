@@ -22,13 +22,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_W || key == GLFW_KEY_UP)
 	{
 		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-		camera->position = camera->position + SPEED * camera->target;
+		camera->position = camera->position + SPEEDK * camera->target;
 	}
 
 	if (key == GLFW_KEY_S || key == GLFW_KEY_DOWN)
 	{
 		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-		camera->position = camera->position - SPEED * camera->target;
+		camera->position = camera->position - SPEEDK * camera->target;
 	}
 
 	if (key == GLFW_KEY_A || key == GLFW_KEY_LEFT)
@@ -39,7 +39,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		Vector3CrossProduct(&camera->target, &camera->up, &targetxup);
 		Vector3Normalize(&targetxup);
 
-		camera->position = camera->position - SPEED * targetxup;
+		camera->position = camera->position - SPEEDK * targetxup;
 	}
 
 	if (key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
@@ -50,20 +50,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		Vector3CrossProduct(&camera->target, &camera->up, &targetxup);
 		Vector3Normalize(&targetxup);
 
-		camera->position = camera->position + SPEED * targetxup;
+		camera->position = camera->position + SPEEDK * targetxup;
 	}
 }
 
 void cursor_pos_callback(GLFWwindow* window, double x, double y)
 {
-	CameraInfo* cameraInfo = (CameraInfo*)glfwGetWindowUserPointer(window);
+	CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
 
 	// Calcula el desplazamiento del mouse
-	GLdouble offsetX = cameraInfo->mouseX - x;
-	GLdouble offsetY = cameraInfo->mouseY - y;
-
-	cameraInfo->mouseX = x;
-	cameraInfo->mouseY = y;
+	GLdouble offsetX = camera->mouseX - x;
+	GLdouble offsetY = camera->mouseY - y;
+	
+	camera->mouseX = x;
+	camera->mouseY = y;
 
 	// Calcula los angulos horizontal y vertical en base al desplazamiento obtenido
 	float horizontalAngle = offsetX / 5.0f;
@@ -74,25 +74,25 @@ void cursor_pos_callback(GLFWwindow* window, double x, double y)
 	Matrix3x3MakeRotationY(horizontalAngle, &rotation);
 
 	Vector3 newTarget;
-	Matrix3x3MultiplicationByVector(&rotation, &cameraInfo->target, &newTarget);
+	Matrix3x3MultiplicationByVector(&rotation, &camera->target, &newTarget);
 
 	Vector3Normalize(&newTarget);
 
-	cameraInfo->target.x = newTarget.x;
-	cameraInfo->target.y = newTarget.y;
-	cameraInfo->target.z = newTarget.z;
+	camera->target.x = newTarget.x;
+	camera->target.y = newTarget.y;
+	camera->target.z = newTarget.z;
 
 	// Rota el vector target con respecto al eje horizontal de acuerdo al angulo vertical
 	Vector3 horizontalAxis;
-	Vector3CrossProduct(&cameraInfo->up, &newTarget, &horizontalAxis);
+	Vector3CrossProduct(&camera->up, &newTarget, &horizontalAxis);
 	Vector3Normalize(&horizontalAxis);
 
 	Matrix3x3MakeRotation(&horizontalAxis, verticalAngle, &rotation);
-	Matrix3x3MultiplicationByVector(&rotation, &cameraInfo->target, &newTarget);
+	Matrix3x3MultiplicationByVector(&rotation, &camera->target, &newTarget);
 
-	cameraInfo->target.x = newTarget.x;
-	cameraInfo->target.y = newTarget.y;
-	cameraInfo->target.z = newTarget.z;
+	camera->target.x = newTarget.x;
+	camera->target.y = newTarget.y;
+	camera->target.z = newTarget.z;
 }
 
 #endif // CONTROL_H
