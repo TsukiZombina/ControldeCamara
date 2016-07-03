@@ -34,10 +34,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex_shader.glsl">
+    <None Include="fragment_shader.glsl">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="fragment_shader.glsl">
+    <None Include="vertex_shader.glsl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

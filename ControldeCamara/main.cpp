@@ -155,7 +155,8 @@ int main()
 		// Dibuja
 		glUseProgram(shaderProgram);
 
-	
+		GLint location = glGetUniformLocation(shaderProgram, "modelViewProjection");
+		glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)modelViewProjection.m);
 
 		glBindVertexArray(vao);
 
