@@ -58,7 +58,6 @@ void cursor_pos_callback(GLFWwindow* window, double x, double y)
 {
 	CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
 
-	// Calcula el desplazamiento del mouse
 	GLdouble offsetX = camera->mouseX - x;
 	GLdouble offsetY = camera->mouseY - y;
 	
