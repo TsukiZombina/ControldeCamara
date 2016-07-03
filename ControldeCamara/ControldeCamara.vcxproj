@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="control.h" />
     <ClInclude Include="math3d.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
@@ -29,6 +30,10 @@
   <ItemGroup>
     <None Include="fragment_shader.glsl" />
     <None Include="vertex_shader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="indices.txt" />
+    <Text Include="vertices.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{744EC2C7-0B6E-4FEA-ABA0-5786AE73B2EA}</ProjectGuid>

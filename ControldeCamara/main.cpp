@@ -1,166 +1,18 @@
 #include <iostream>
+#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <fstream>
 
 #include "util.h"
 #include "math3d.h"
 #include "camera.h"
+#include "control.h"
 
 using std::cout;
 using std::endl;
 
 const int WIDTH = 512, HEIGHT = 512;
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-
-	if (key == GLFW_KEY_W)
-	{
-		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-		camera->position = camera->position + camera->speed * camera->target;
-	}
-
-	if (key == GLFW_KEY_S)
-	{
-		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-		camera->position = camera->position - camera->speed * camera->target;
-	}
-
-	if (key == GLFW_KEY_A)
-	{
-		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-
-		Vector3 exu;
-		Vector3CrossProduct(&camera->target, &camera->up, &exu);
-		Vector3Normalize(&exu);
-
-		camera->position = camera->position - camera->speed * exu;
-	}
-
-	if (key == GLFW_KEY_D)
-	{
-		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-
-		Vector3 exu;
-		Vector3CrossProduct(&camera->target, &camera->up, &exu);
-		Vector3Normalize(&exu);
-
-		camera->position = camera->position + camera->speed * exu;
-	}
-}
-
-void cursor_pos_callback(GLFWwindow* window, double xPos, double yPos)
-{
-	CameraInfo* cameraInfo = (CameraInfo*)glfwGetWindowUserPointer(window);
-
-	// Calcula el desplazamiento del mouse
-	GLfloat mouseOffsetX = (float)(cameraInfo->mouseX - xPos);
-	GLfloat mouseOffsetY = (float)(cameraInfo->mouseY - yPos);
-
-	cameraInfo->mouseX = xPos;
-	cameraInfo->mouseY = yPos;
-
-	// Calcula los angulos horizontal y vertical en base al desplazamiento obtenido
-	float horizontalAngle = mouseOffsetX / 5.0f;
-	float verticalAngle = mouseOffsetY / 5.0f;
-
-	// Rota el vector target con respecto al eje vertical de acuerdo al angulo horizontal
-	Matrix3x3 rotation;
-	Matrix3x3MakeRotationY(horizontalAngle, &rotation);
-
-	Vector3 newTarget;
-	Matrix3x3MultiplicationByVector(&rotation, &cameraInfo->target, &newTarget);
-
-	Vector3Normalize(&newTarget);
-
-	cameraInfo->target.x = newTarget.x;
-	cameraInfo->target.y = newTarget.y;
-	cameraInfo->target.z = newTarget.z;
-
-	// Rota el vector target con respecto al eje horizontal de acuerdo al angulo vertical
-	Vector3 horizontalAxis;
-	Vector3CrossProduct(&cameraInfo->up, &newTarget, &horizontalAxis);
-	Vector3Normalize(&horizontalAxis);
-
-	Matrix3x3MakeRotation(&horizontalAxis, verticalAngle, &rotation);
-	Matrix3x3MultiplicationByVector(&rotation, &cameraInfo->target, &newTarget);
-
-	cameraInfo->target.x = newTarget.x;
-	cameraInfo->target.y = newTarget.y;
-	cameraInfo->target.z = newTarget.z;
-}
-
-GLuint compileShaderObject(const GLchar* shaderCode, GLenum shaderType)
-{
-	GLuint shaderObject = glCreateShader(shaderType);
-
-	if (shaderObject == 0)
-	{
-		cout << "Error creando shader del tipo: " << shaderType << endl;
-
-		exit(1);
-	}
-
-	glShaderSource(shaderObject, 1, &shaderCode, NULL);
-	glCompileShader(shaderObject);
-
-	GLint success;
-	GLchar infoLog[512];
-
-	glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(shaderObject, 512, NULL, infoLog);
-
-		cout << "Error compilando shader del tipo: " << shaderType << endl;
-		cout << infoLog << endl;
-
-		exit(1);
-	}
-
-	return shaderObject;
-}
-
-GLuint linkShaderProgram()
-{
-	GLuint shaderProgram = glCreateProgram();
-
-	std::string shaderStr = loadShaderCode("../ControlDeCamara/vertex_shader.glsl");
-	const GLchar* shaderCode = shaderStr.c_str();
-
-	GLuint vertexShader = compileShaderObject(shaderCode, GL_VERTEX_SHADER);
-
-	shaderStr = loadShaderCode("../ControlDeCamara/fragment_shader.glsl");
-	shaderCode = shaderStr.c_str();
-
-	GLuint fragmentShader = compileShaderObject(shaderCode, GL_FRAGMENT_SHADER);
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	GLint success;
-	GLchar infoLog[512];
-
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-
-		cout << "Error de enlazado: " << infoLog << endl;
-
-		exit(1);
-	}
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return shaderProgram;
-}
 
 int main()
 {
@@ -183,7 +35,7 @@ int main()
 	glfwMakeContextCurrent(window);
 
 	glfwSetKeyCallback(window, key_callback);
-	glfwSetCursorPosCallback(window, cursor_pos_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glewExperimental = GL_TRUE;
@@ -199,6 +51,25 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
+	/*std::vector<GLfloat> vertices;
+	std::ifstream ifsv("vertices.txt");
+	GLfloat vertex;
+	while (ifsv >> vertex) 
+	{
+		vertices.push_back(vertex);
+	}
+	ifsv.close();
+
+	std::vector<GLfloat> indices;
+	std::ifstream ifsi("indices.txt");
+	GLfloat index;
+	while (ifsi >> index)
+	{
+		indices.push_back(index);
+	}
+	ifsi.close();*/
+
+	
 	GLfloat vertices[] =
 	{
 		// Posicion				// Color

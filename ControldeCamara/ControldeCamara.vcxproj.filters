@@ -24,6 +24,9 @@
     <ClInclude Include="math3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="control.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -37,5 +40,13 @@
     <None Include="fragment_shader.glsl">
       <Filter>Source Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="vertices.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="indices.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
