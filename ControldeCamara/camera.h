@@ -4,6 +4,8 @@
 
 #include "math3d.h"
 
+const GLfloat SPEED = 0.1f;
+
 struct CameraInfo
 {
 	Vector3 position = { 0.0f, 0.0f, 0.0f };
@@ -12,8 +14,6 @@ struct CameraInfo
 
 	double mouseX = 0.0;
 	double mouseY = 0.0;
-
-	GLfloat speed = 0.2f;
 };
 
 #endif // CAMERA_H

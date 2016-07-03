@@ -19,55 +19,55 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
-	if (key == GLFW_KEY_W)
+	if (key == GLFW_KEY_W || key == GLFW_KEY_UP)
 	{
 		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-		camera->position = camera->position + camera->speed * camera->target;
+		camera->position = camera->position + SPEED * camera->target;
 	}
 
-	if (key == GLFW_KEY_S)
+	if (key == GLFW_KEY_S || key == GLFW_KEY_DOWN)
 	{
 		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
-		camera->position = camera->position - camera->speed * camera->target;
+		camera->position = camera->position - SPEED * camera->target;
 	}
 
-	if (key == GLFW_KEY_A)
+	if (key == GLFW_KEY_A || key == GLFW_KEY_LEFT)
 	{
 		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
 
-		Vector3 exu;
-		Vector3CrossProduct(&camera->target, &camera->up, &exu);
-		Vector3Normalize(&exu);
+		Vector3 targetxup;
+		Vector3CrossProduct(&camera->target, &camera->up, &targetxup);
+		Vector3Normalize(&targetxup);
 
-		camera->position = camera->position - camera->speed * exu;
+		camera->position = camera->position - SPEED * targetxup;
 	}
 
-	if (key == GLFW_KEY_D)
+	if (key == GLFW_KEY_D || key == GLFW_KEY_RIGHT)
 	{
 		CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
 
-		Vector3 exu;
-		Vector3CrossProduct(&camera->target, &camera->up, &exu);
-		Vector3Normalize(&exu);
+		Vector3 targetxup;
+		Vector3CrossProduct(&camera->target, &camera->up, &targetxup);
+		Vector3Normalize(&targetxup);
 
-		camera->position = camera->position + camera->speed * exu;
+		camera->position = camera->position + SPEED * targetxup;
 	}
 }
 
-void cursor_pos_callback(GLFWwindow* window, double xPos, double yPos)
+void cursor_pos_callback(GLFWwindow* window, double x, double y)
 {
 	CameraInfo* cameraInfo = (CameraInfo*)glfwGetWindowUserPointer(window);
 
 	// Calcula el desplazamiento del mouse
-	GLfloat mouseOffsetX = (float)(cameraInfo->mouseX - xPos);
-	GLfloat mouseOffsetY = (float)(cameraInfo->mouseY - yPos);
+	GLdouble offsetX = cameraInfo->mouseX - x;
+	GLdouble offsetY = cameraInfo->mouseY - y;
 
-	cameraInfo->mouseX = xPos;
-	cameraInfo->mouseY = yPos;
+	cameraInfo->mouseX = x;
+	cameraInfo->mouseY = y;
 
 	// Calcula los angulos horizontal y vertical en base al desplazamiento obtenido
-	float horizontalAngle = mouseOffsetX / 5.0f;
-	float verticalAngle = mouseOffsetY / 5.0f;
+	float horizontalAngle = offsetX / 5.0f;
+	float verticalAngle = offsetY / 5.0f;
 
 	// Rota el vector target con respecto al eje vertical de acuerdo al angulo horizontal
 	Matrix3x3 rotation;
