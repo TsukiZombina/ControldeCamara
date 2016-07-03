@@ -51,25 +51,6 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
-	/*std::vector<GLfloat> vertices;
-	std::ifstream ifsv("vertices.txt");
-	GLfloat vertex;
-	while (ifsv >> vertex) 
-	{
-		vertices.push_back(vertex);
-	}
-	ifsv.close();
-
-	std::vector<GLfloat> indices;
-	std::ifstream ifsi("indices.txt");
-	GLfloat index;
-	while (ifsi >> index)
-	{
-		indices.push_back(index);
-	}
-	ifsi.close();*/
-
-	
 	GLfloat vertices[] =
 	{
 		// Posicion				// Color
@@ -87,6 +68,29 @@ int main()
 		2, 3, 0,
 		1, 2, 0
 	};
+
+	/*std::vector<GLfloat> vertices;
+	std::ifstream ifsv("vertices.txt");
+	GLfloat vertex;
+	while (ifsv >> vertex)
+	{
+	vertices.push_back(vertex);
+	}
+	ifsv.close();*/
+
+	/*std::vector<GLfloat> indices;
+	std::ifstream ifsi("indices.txt");
+	GLfloat index;
+	while (ifsi >> index)
+	{
+		indices.push_back(index);
+	}
+	ifsi.close();
+
+	for (auto& verte : vertices)
+		cout << verte << " ";
+	for (auto& indi : indices)
+		cout << indi << " ";*/
 
 	CameraInfo camera;
 	camera.position = { 0.0f, 0.0f,  3.0f };
@@ -151,8 +155,7 @@ int main()
 		// Dibuja
 		glUseProgram(shaderProgram);
 
-		GLint location = glGetUniformLocation(shaderProgram, "modelViewProjection");
-		glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)modelViewProjection.m);
+	
 
 		glBindVertexArray(vao);
 
