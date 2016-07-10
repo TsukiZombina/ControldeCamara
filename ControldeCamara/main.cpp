@@ -145,9 +145,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Vector3 newTarget = camera.position + camera.target;
-
 		Matrix4x4MakeView(&camera.position, &newTarget, &camera.up, &view);
-
 		modelViewProjection = projection * view * model;
 
 		// Dibuja

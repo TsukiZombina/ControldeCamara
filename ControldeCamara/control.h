@@ -56,42 +56,30 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void cursor_pos_callback(GLFWwindow* window, double x, double y)
 {
+	Matrix3x3 rotation;
+	Vector3 target;
+	Vector3 horizontalAxis;
+	Vector3 normalizedVertical = {0.0f, 1.0f, 0.0f};
+
 	CameraInfo* camera = (CameraInfo*)glfwGetWindowUserPointer(window);
 
-	GLdouble offsetX = camera->mouseX - x;
-	GLdouble offsetY = camera->mouseY - y;
+	GLdouble offsetX = (camera->mouseX - x) * SPEEDC;
+	GLdouble offsetY = (camera->mouseY - y) * SPEEDC;
 	
 	camera->mouseX = x;
 	camera->mouseY = y;
 
-	// Calcula los angulos horizontal y vertical en base al desplazamiento obtenido
-	float horizontalAngle = offsetX / 5.0f;
-	float verticalAngle = offsetY / 5.0f;
+	// First rotation: Horizontal angle respect to Y axis
+	Matrix3x3MakeRotation(&normalizedVertical, offsetX, &rotation);
+	Matrix3x3MultiplicationByVector(&rotation, &camera->target, &target);
+	Vector3Normalize(&target);
 
-	// Rota el vector target con respecto al eje vertical de acuerdo al angulo horizontal
-	Matrix3x3 rotation;
-	Matrix3x3MakeRotationY(horizontalAngle, &rotation);
-
-	Vector3 newTarget;
-	Matrix3x3MultiplicationByVector(&rotation, &camera->target, &newTarget);
-
-	Vector3Normalize(&newTarget);
-
-	camera->target.x = newTarget.x;
-	camera->target.y = newTarget.y;
-	camera->target.z = newTarget.z;
-
-	// Rota el vector target con respecto al eje horizontal de acuerdo al angulo vertical
-	Vector3 horizontalAxis;
-	Vector3CrossProduct(&camera->up, &newTarget, &horizontalAxis);
+	// Second rotation: vertical angle respect to horizontal axis
+	Vector3CrossProduct(&camera->up, &target, &horizontalAxis);
 	Vector3Normalize(&horizontalAxis);
-
-	Matrix3x3MakeRotation(&horizontalAxis, verticalAngle, &rotation);
-	Matrix3x3MultiplicationByVector(&rotation, &camera->target, &newTarget);
-
-	camera->target.x = newTarget.x;
-	camera->target.y = newTarget.y;
-	camera->target.z = newTarget.z;
+	Matrix3x3MakeRotation(&horizontalAxis, offsetY, &rotation);
+	Matrix3x3MultiplicationByVector(&rotation, &target, &target);
+	camera->target = target;
 }
 
 #endif // CONTROL_H
