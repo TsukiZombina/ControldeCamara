@@ -96,3 +96,17 @@ GLuint linkShaderProgram()
 
 	return shaderProgram;
 }
+
+template<class T>
+std::vector<T>& readVector(std::vector<T>& data, const char* filename) {
+	std::ifstream ifs(filename);
+	T element;
+	if (ifs.is_open())
+	{
+		while (ifs >> element)
+			data.push_back(element);
+		ifs.close();
+	}
+	else std::cerr << "Unable to open file" << endl;
+	return data;
+}

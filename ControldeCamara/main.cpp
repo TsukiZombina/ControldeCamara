@@ -51,36 +51,11 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
-	GLfloat vertex;
 	std::vector<GLfloat> vertices;
-	std::ifstream ifsv("vertices.txt");
-	if (ifsv.is_open())
-	{
-		while (ifsv >> vertex)
-		{
-			vertices.push_back(vertex);
-		}
-		ifsv.close();
-	}
-	else std::cerr << "Unable to open file" << endl;
+	readVector(vertices, "vertices.txt");
 
 	std::vector<GLuint> indices;
-	std::ifstream ifsi("indices.txt");
-	GLuint index;
-	if (ifsi.is_open())
-	{
-		while (ifsi >> index)
-		{
-			indices.push_back(index);
-		}
-		ifsi.close();
-	}
-	else std::cerr << "Unable to open file" << endl;
-
-	/*for (auto& verte : vertices)
-		cout << verte << " ";
-	for (auto& indi : indices)
-		cout << indi << " ";*/
+	readVector(indices, "indices.txt");
 
 	CameraInfo camera;
 	camera.position = { 0.0f, 0.0f,  3.0f };
