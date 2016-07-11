@@ -51,43 +51,33 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
-	GLfloat vertices[] =
-	{
-		// Posicion				// Color
-
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f, 1.0f,
-		0.0f,  0.5f,  0.0f,   1.0f, 0.0f, 1.0f, 1.0f
-	};
-
-	GLuint indices[] =
-	{
-		0, 3, 1,
-		1, 3, 2,
-		2, 3, 0,
-		1, 2, 0
-	};
-
-	/*std::vector<GLfloat> vertices;
-	std::ifstream ifsv("vertices.txt");
 	GLfloat vertex;
-	while (ifsv >> vertex)
+	std::vector<GLfloat> vertices;
+	std::ifstream ifsv("vertices.txt");
+	if (ifsv.is_open())
 	{
-	vertices.push_back(vertex);
+		while (ifsv >> vertex)
+		{
+			vertices.push_back(vertex);
+		}
+		ifsv.close();
 	}
-	ifsv.close();*/
+	else std::cerr << "Unable to open file" << endl;
 
-	/*std::vector<GLfloat> indices;
+	std::vector<GLuint> indices;
 	std::ifstream ifsi("indices.txt");
-	GLfloat index;
-	while (ifsi >> index)
+	GLuint index;
+	if (ifsi.is_open())
 	{
-		indices.push_back(index);
+		while (ifsi >> index)
+		{
+			indices.push_back(index);
+		}
+		ifsi.close();
 	}
-	ifsi.close();
+	else std::cerr << "Unable to open file" << endl;
 
-	for (auto& verte : vertices)
+	/*for (auto& verte : vertices)
 		cout << verte << " ";
 	for (auto& indi : indices)
 		cout << indi << " ";*/
@@ -120,10 +110,10 @@ int main()
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -144,9 +134,10 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Vector3 target = camera.position + camera.target;
-		Matrix4x4MakeView(&camera.position, &target, &camera.up, &view);
-		modelViewProjection = projection * view * model;
+		Matrix4x4MakeView(&camera.position, &camera.target, &camera.up, &view);
+		Matrix4x4 modelViewProjection, temp;
+		Matrix4x4Multiplication(&view, &model, &temp);
+		Matrix4x4Multiplication(&projection, &temp, &modelViewProjection);
 
 		// Dibuja
 		glUseProgram(shaderProgram);
