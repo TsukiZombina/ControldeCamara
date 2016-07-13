@@ -69,7 +69,7 @@ void cursor_pos_callback(GLFWwindow* window, double x, double y)
 	// First rotation: Horizontal angle respect to Y axis
 	rotation.MakeRotation(normalizedVertical, offsetX);
 	target = rotation * camera->target;
-	target.Normalize();
+	target = target.Normalize();
 
 	// Second rotation: vertical angle respect to horizontal axis
 	horizontalAxis = CrossNormalize(camera->up, target);

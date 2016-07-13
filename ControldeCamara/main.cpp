@@ -90,10 +90,10 @@ int main()
 	SquareMatrix<GLfloat, 4> model;
 	SquareMatrix<GLfloat, 4> view;
 	SquareMatrix<GLfloat, 4> projection;
-	/*model.Identity();*/
-
+	model.Identity();
+	
 	MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, projection);
-
+	
 	GLfloat mvp[4][4];
 
 	GLuint vao, vbo;
@@ -126,10 +126,17 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		MakeView(camera.position, camera.target, camera.up, view);
-
+		
 		Matrix<GLfloat, 4, 4> modelViewProjection;
 		modelViewProjection = model * view * projection;
-
+		/*for (size_t i = 0; i < 4; i++)
+		{
+			for (size_t j = 0; j < 4; j++)
+			{
+				cout << modelViewProjection(i, j) << " ";
+			}
+			cout << endl;
+		}*/
 		/*for (size_t i = 0; i < 4; i++)
 		{
 			for (size_t j = 0; j < 4; j++)
