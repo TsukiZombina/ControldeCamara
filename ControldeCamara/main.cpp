@@ -117,10 +117,17 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		MakeView(camera.position, camera.target, camera.up, view);
+
 		Matrix<GLfloat, 4, 4> modelViewProjection;
-
 		modelViewProjection = model * view * projection;
-
+		for (size_t i = 0; i < 4; i++)
+		{
+			for (size_t j = 0; j < 4; j++)
+			{
+				cout << model(i, j) << " ";
+			}
+			cout << endl;
+		}
 		// Dibuja
 		glUseProgram(shaderProgram);
 

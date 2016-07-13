@@ -20,7 +20,7 @@ public:
 	T Cofactor(const size_t&, const size_t&) const;
 	T Det() const;
 	/*void Identity();*/
-	void MakeRotation(Vector3D<T>& axis, float angle);
+	/*void MakeRotation(Vector3D<T>& axis, float angle);*/
 	SquareMatrix<double, level> Inverse() const;
 	template<class T1, class T2>
 	friend Vector3D<T2> operator*(const SquareMatrix<T1, 3>&, Vector3D<T2>&);
@@ -101,27 +101,27 @@ T SquareMatrix<T, level>::Det() const
 //		}
 //}
 
-template<class T, size_t level>
-void SquareMatrix<T, level>::MakeRotation(Vector3D<T>& axis, float angle)
-{
-	// Convert angle to radians
-	angle = angle * 3.1415926536f / 180;
-
-	float cosAngle = cosf(angle);
-	float sinAngle = sinf(angle);
-
-	elements[0][0] = cosAngle + (1 - cosAngle) * axis(0) * axis(0);
-	elements[0][1] = (1 - cosAngle) * axis(0) * axis(1) - sinAngle * axis(2);
-	elements[0][2] = (1 - cosAngle) * axis(0) * axis(2) + sinAngle * axis(1);
-
-	elements[1][0] = (1 - cosAngle) * axis(0) * axis(0) + sinAngle * axis(2);
-	elements[1][1] = cosAngle + (1 - cosAngle) * axis(1) * axis(1);
-	elements[1][2] = (1 - cosAngle) * axis(1) * axis(2) - sinAngle * axis(0);
-
-	elements[2][0] = (1 - cosAngle) * axis(0) * axis(2) - sinAngle * axis(1);
-	elements[2][1] = (1 - cosAngle) * axis(1) * axis(2) + sinAngle * axis(0);
-	elements[2][2] = cosAngle + (1 - cosAngle) * axis(2) * axis(2);
-}
+//template<class T, size_t level>
+//void SquareMatrix<T, level>::MakeRotation(Vector3D<T>& axis, float angle)
+//{
+//	// Convert angle to radians
+//	angle = angle * 3.1415926536f / 180;
+//
+//	float cosAngle = cosf(angle);
+//	float sinAngle = sinf(angle);
+//
+//	elements[0][0] = cosAngle + (1 - cosAngle) * axis(0) * axis(0);
+//	elements[0][1] = (1 - cosAngle) * axis(0) * axis(1) - sinAngle * axis(2);
+//	elements[0][2] = (1 - cosAngle) * axis(0) * axis(2) + sinAngle * axis(1);
+//
+//	elements[1][0] = (1 - cosAngle) * axis(0) * axis(0) + sinAngle * axis(2);
+//	elements[1][1] = cosAngle + (1 - cosAngle) * axis(1) * axis(1);
+//	elements[1][2] = (1 - cosAngle) * axis(1) * axis(2) - sinAngle * axis(0);
+//
+//	elements[2][0] = (1 - cosAngle) * axis(0) * axis(2) - sinAngle * axis(1);
+//	elements[2][1] = (1 - cosAngle) * axis(1) * axis(2) + sinAngle * axis(0);
+//	elements[2][2] = cosAngle + (1 - cosAngle) * axis(2) * axis(2);
+//}
 
 template<class T, size_t level>
 SquareMatrix<double, level> SquareMatrix<T, level>::Inverse() const

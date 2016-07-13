@@ -22,6 +22,7 @@ public:
 	Matrix<T, column, row> Transpose();
 	void InitZero();
 	void Identity();
+	void MakeRotation(Vector3D<T>& axis, float angle);
 	void set(const size_t& i, const size_t& j, T element);
 	template<class T2>
 	Matrix<T, row, column> operator=(const Matrix<T2, row, column>&);
@@ -63,7 +64,7 @@ Matrix<T, row, column>::Matrix(const Matrix<T2, row, column>& m)
 template<class T, size_t row, size_t column>
 const T * Matrix<T, row, column>::GetArray() const
 {
-	const T* ptr = &elements[0][0];
+	const T* ptr = (T*)elements;
 	return ptr;
 }
 
@@ -112,6 +113,28 @@ void Matrix<T, row, column>::Identity()
 			else
 				elements[i][j] = 0;
 		}
+}
+
+template<class T, size_t row, size_t column>
+inline void Matrix<T, row, column>::MakeRotation(Vector3D<T>& axis, float angle)
+{
+	//Convert angle to radians
+	angle = angle * 3.1415926536f / 180;
+	
+	float cosAngle = cosf(angle);
+	float sinAngle = sinf(angle);
+	
+	elements[0][0] = cosAngle + (1 - cosAngle) * axis(0) * axis(0);
+	elements[0][1] = (1 - cosAngle) * axis(0) * axis(1) - sinAngle * axis(2);
+	elements[0][2] = (1 - cosAngle) * axis(0) * axis(2) + sinAngle * axis(1);
+	
+	elements[1][0] = (1 - cosAngle) * axis(0) * axis(0) + sinAngle * axis(2);
+	elements[1][1] = cosAngle + (1 - cosAngle) * axis(1) * axis(1);
+	elements[1][2] = (1 - cosAngle) * axis(1) * axis(2) - sinAngle * axis(0);
+	
+	elements[2][0] = (1 - cosAngle) * axis(0) * axis(2) - sinAngle * axis(1);
+	elements[2][1] = (1 - cosAngle) * axis(1) * axis(2) + sinAngle * axis(0);
+	elements[2][2] = cosAngle + (1 - cosAngle) * axis(2) * axis(2);
 }
 
 template<class T, size_t row, size_t column>

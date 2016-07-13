@@ -32,6 +32,7 @@
 	SquareMatrix<T, order>& MakeView(Vector3D<T>& position, Vector3D<T>& target, Vector3D<T>& up, SquareMatrix<T, order>& view)
 	{
 		Vector3D<float> f(target(0) - position(0), target(1) - position(1), target(2) - position(2));
+		f.Normalize();
 
 		Vector3D<float> s;
 		s = CrossNormalize(f, up);
