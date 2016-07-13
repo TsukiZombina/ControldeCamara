@@ -87,8 +87,6 @@ int main()
 	Matrix4x4 projection;
 	Matrix4x4MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, &projection);
 
-	Matrix4x4 modelViewProjection;
-
 	GLuint vao, vbo;
 
 	glGenVertexArrays(1, &vao);
