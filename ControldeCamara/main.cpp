@@ -53,7 +53,7 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
-	Vector3D<float> P1(-0.5, -0.5, 0), P2(0.5, 0.5, 0), T1(0.25,0.0, -0.25), T2(0.75, 0.0, -0.75);
+	Vector3D<float> P1(-0.5, -0.5, 0), P2(0.5, 0.5, 0), T1(1.0,-1.0, 0.0), T2(1.0, -1.0, 0.0);
 	HermiteCurve H;
 	H = HermiteCurve(P1, P2, T1, T2);
 	float vertices[707];
