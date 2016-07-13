@@ -10,6 +10,7 @@ class Vector3D
 	T &x = elements[0], &y = elements[1], &z = elements[2], &w = elements[3];
 public:
 	Vector3D(const T& a = 0, const T& b = 0, const T& c = 0);
+	void set(const T&, const T&, const T&);
 	Vector3D(const Vector3D<T>&);
 	template<class T2>
 	Vector3D(const Vector3D<T2>&);
@@ -17,8 +18,6 @@ public:
 	T Length() const;
 	Vector3D<T> Normalize() const;
 	const T* GetArray() const;
-	/*template<class T>
-	void set(T, T, T);*/
 	T operator()(const int&) const;
 	Vector3D<T> operator=(const Vector3D<T>&);
 	template<class T1, class T2>
@@ -58,6 +57,14 @@ Vector3D<T>::Vector3D(const T& a, const T& b, const T& c)
 }
 
 template<class T>
+void Vector3D<T>::set(const T & a, const T & b, const T & c)
+{
+	x = a;
+	y = b;
+	z = c;
+}
+
+template<class T>
 Vector3D<T>::Vector3D(const Vector3D<T>& v)
 {
 	x = v.x;
@@ -74,14 +81,6 @@ Vector3D<T>::Vector3D(const Vector3D<T2>& v)
 	y = arr[1];
 	z = arr[2];
 }
-
-//template<class T>
-//void Vector3D<T>::set(T a, T b, T c)
-//{
-//	x = a;
-//	y = b;
-//	z = c;
-//}
 
 template<class T>
 Vector3D<T>::~Vector3D()

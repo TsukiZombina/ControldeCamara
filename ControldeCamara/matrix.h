@@ -21,6 +21,7 @@ public:
 	const T* GetArray() const;
 	Matrix<T, column, row> Transpose();
 	void InitZero();
+	void Identity();
 	void set(const size_t& i, const size_t& j, T element);
 	template<class T2>
 	Matrix<T, row, column> operator=(const Matrix<T2, row, column>&);
@@ -62,7 +63,8 @@ Matrix<T, row, column>::Matrix(const Matrix<T2, row, column>& m)
 template<class T, size_t row, size_t column>
 const T * Matrix<T, row, column>::GetArray() const
 {
-	return *elements;
+	const T* ptr = &elements[0][0];
+	return ptr;
 }
 
 template<class T, size_t row, size_t column>
@@ -97,6 +99,19 @@ void Matrix<T, row, column>::InitZero()
 	for (int i = 0; i < row; i++)
 		for (int j = 0; j < column; j++)
 			elements[i][j] = 0;
+}
+
+template<class T, size_t row, size_t column>
+void Matrix<T, row, column>::Identity()
+{
+	for (int i = 0; i < row; i++)
+		for (int j = 0; j < column; j++)
+		{
+			if (i == j)
+				elements[i][j] = 1;
+			else
+				elements[i][j] = 0;
+		}
 }
 
 template<class T, size_t row, size_t column>

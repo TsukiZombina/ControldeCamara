@@ -60,11 +60,11 @@ int main()
 	for (int i = 0; i <= 100; i++) {
 		Vector3D<double> fill = H(0.01 * i);
 		vertices[7 * i] = fill(0);
-		cout << fill(0) << " ";
+		//cout << fill(0) << " ";
 		vertices[7 * i + 1] = fill(1);
-		cout << fill(1) << " ";
+		//cout << fill(1) << " ";
 		vertices[7 * i + 2] = fill(2);
-		cout << fill(2) << endl;
+		//cout << fill(2) << endl;
 		vertices[7 * i + 3] = 1.0;
 		vertices[7 * i + 4] = 0.0;
 		vertices[7 * i + 5] = 0.0;
@@ -72,18 +72,19 @@ int main()
 	}
 
 	CameraInfo camera;
-	camera.position = { 0.0f, 0.0f,  3.0f };
-	camera.target = { 0.0f, 0.0f, -1.0f };
-	camera.up = { 0.0f, 1.0f,  0.0f };
+	camera.position.set(0.0f, 0.0f,  3.0f);
+	camera.target.set(0.0f, 0.0f, -1.0f);
+	camera.up.set(0.0f, 1.0f,  0.0f);
 	camera.mouseX = WIDTH / HEIGHT;
 	camera.mouseY = WIDTH / HEIGHT;
 
 	glfwSetWindowUserPointer(window, (GLvoid*)&camera);
 
-	SquareMatrix<GLfloat,4> model;
+	SquareMatrix<GLfloat, 4> model;
 	SquareMatrix<GLfloat, 4> view;
 	SquareMatrix<GLfloat, 4> projection;
 	model.Identity();
+
 	MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, projection);
 
 	GLuint vao, vbo;
@@ -117,7 +118,7 @@ int main()
 
 		MakeView(camera.position, camera.target, camera.up, view);
 		Matrix<GLfloat, 4, 4> modelViewProjection;
-		
+
 		modelViewProjection = model * view * projection;
 
 		// Dibuja
