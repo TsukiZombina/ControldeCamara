@@ -62,7 +62,8 @@ Matrix<T, row, column>::Matrix(const Matrix<T2, row, column>& m)
 template<class T, size_t row, size_t column>
 const T * Matrix<T, row, column>::GetArray() const
 {
-	return *elements;
+	T ptr* = &elements[0][0];
+	return ptr;
 }
 
 template<class T, size_t row, size_t column>
