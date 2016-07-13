@@ -125,15 +125,7 @@ int main()
 
 		GLint location = glGetUniformLocation(shaderProgram, "modelViewProjection");
 		glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)modelViewProjection.GetArray());
-		/*GLfloat* ptr = modelViewProjection.GetArray();
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				cout << ptr[i][j] << " ";
-			}
-			cout << endl;
-		}*/
+	
 		glBindVertexArray(vao);
 
 		glDrawArrays(GL_LINE_STRIP, 0, 101);
