@@ -54,9 +54,6 @@ int main()
 	std::vector<GLfloat> vertices;
 	readVector(vertices, "vertices.txt");
 
-	std::vector<GLuint> indices;
-	readVector(indices, "indices.txt");
-
 	CameraInfo camera;
 	camera.position = { 0.0f, 0.0f,  3.0f };
 	camera.target = { 0.0f, 0.0f, -1.0f };
@@ -76,24 +73,20 @@ int main()
 
 	Matrix4x4 modelViewProjection;
 
-	GLuint vao, vbo, ebo;
+	GLuint vao, vbo;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
 
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
-
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE,	7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -122,7 +115,7 @@ int main()
 
 		glBindVertexArray(vao);
 
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_LINE_STRIP, 0, 12);
 
 		glBindVertexArray(0);
 
