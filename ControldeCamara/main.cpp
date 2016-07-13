@@ -78,14 +78,23 @@ int main()
 	camera.mouseX = WIDTH / HEIGHT;
 	camera.mouseY = WIDTH / HEIGHT;
 
+	/*for (int i = 0; i < 3; i++)
+	{
+		cout << camera.position(i) << " ";
+		cout << camera.target(i) << " ";
+		cout << camera.up(i) << " ";
+	}*/
+
 	glfwSetWindowUserPointer(window, (GLvoid*)&camera);
 
 	SquareMatrix<GLfloat, 4> model;
 	SquareMatrix<GLfloat, 4> view;
 	SquareMatrix<GLfloat, 4> projection;
-	model.Identity();
+	/*model.Identity();*/
 
 	MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, projection);
+
+	GLfloat mvp[4][4];
 
 	GLuint vao, vbo;
 
@@ -120,19 +129,22 @@ int main()
 
 		Matrix<GLfloat, 4, 4> modelViewProjection;
 		modelViewProjection = model * view * projection;
-		for (size_t i = 0; i < 4; i++)
+
+		/*for (size_t i = 0; i < 4; i++)
 		{
 			for (size_t j = 0; j < 4; j++)
 			{
-				cout << model(i, j) << " ";
+				mvp[i][j] = modelViewProjection(i, j);
+				cout << mvp[i][j] << " ";
 			}
 			cout << endl;
-		}
+		}*/
+
 		// Dibuja
 		glUseProgram(shaderProgram);
 
 		GLint location = glGetUniformLocation(shaderProgram, "modelViewProjection");
-		glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)modelViewProjection.GetArray());
+		glUniformMatrix4fv(location, 1, GL_TRUE, modelViewProjection.GetArray());
 	
 		glBindVertexArray(vao);
 
