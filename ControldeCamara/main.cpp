@@ -8,6 +8,8 @@
 #include "math3d.h"
 #include "camera.h"
 #include "control.h"
+#include "hermitecurve.h"
+#include "perspective.h"
 
 using std::cout;
 using std::endl;
@@ -51,11 +53,23 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
-	std::vector<GLfloat> vertices;
-	readVector(vertices, "vertices.txt");
-
-	std::vector<GLuint> indices;
-	readVector(indices, "indices.txt");
+	Vector3D<float> P1(-0.5, -0.5, 0), P2(0.5, 0.5, 0), T1(0.25,0.0, -0.25), T2(0.75, 0.0, -0.75);
+	HermiteCurve H;
+	H = HermiteCurve(P1, P2, T1, T2);
+	float vertices[707];
+	for (int i = 0; i <= 100; i++) {
+		Vector3D<double> fill = H(0.01 * i);
+		vertices[7 * i] = fill(0);
+		cout << fill(0) << " ";
+		vertices[7 * i + 1] = fill(1);
+		cout << fill(1) << " ";
+		vertices[7 * i + 2] = fill(2);
+		cout << fill(2) << endl;
+		vertices[7 * i + 3] = 1.0;
+		vertices[7 * i + 4] = 0.0;
+		vertices[7 * i + 5] = 0.0;
+		vertices[7 * i + 6] = 1.0;
+	}
 
 	CameraInfo camera;
 	camera.position = { 0.0f, 0.0f,  3.0f };
@@ -66,29 +80,21 @@ int main()
 
 	glfwSetWindowUserPointer(window, (GLvoid*)&camera);
 
-	Matrix4x4 model;
-	Matrix4x4MakeIdentity(&model);
+	SquareMatrix<GLfloat,4> model;
+	SquareMatrix<GLfloat, 4> view;
+	SquareMatrix<GLfloat, 4> projection;
+	model.Identity();
+	MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, projection);
 
-	Matrix4x4 view;
-
-	Matrix4x4 projection;
-	Matrix4x4MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, &projection);
-
-	Matrix4x4 modelViewProjection;
-
-	GLuint vao, vbo, ebo;
+	GLuint vao, vbo;
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
 
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -101,7 +107,7 @@ int main()
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -109,20 +115,28 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Matrix4x4MakeView(&camera.position, &camera.target, &camera.up, &view);
-		Matrix4x4 modelViewProjection, temp;
-		Matrix4x4Multiplication(&view, &model, &temp);
-		Matrix4x4Multiplication(&projection, &temp, &modelViewProjection);
+		MakeView(camera.position, camera.target, camera.up, view);
+		Matrix<GLfloat, 4, 4> modelViewProjection;
+		
+		modelViewProjection = model * view * projection;
 
 		// Dibuja
 		glUseProgram(shaderProgram);
 
 		GLint location = glGetUniformLocation(shaderProgram, "modelViewProjection");
-		glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)modelViewProjection.m);
-
+		glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)modelViewProjection.GetArray());
+		/*GLfloat* ptr = modelViewProjection.GetArray();
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				cout << ptr[i][j] << " ";
+			}
+			cout << endl;
+		}*/
 		glBindVertexArray(vao);
 
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_LINE_STRIP, 0, 101);
 
 		glBindVertexArray(0);
 

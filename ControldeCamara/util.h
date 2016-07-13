@@ -64,12 +64,12 @@ GLuint linkShaderProgram()
 {
 	GLuint shaderProgram = glCreateProgram();
 
-	std::string shaderStr = loadShaderCode("../ControlDeCamara/vertex_shader.glsl");
+	std::string shaderStr = loadShaderCode("vertex_shader.glsl");
 	const GLchar* shaderCode = shaderStr.c_str();
 
 	GLuint vertexShader = compileShaderObject(shaderCode, GL_VERTEX_SHADER);
 
-	shaderStr = loadShaderCode("../ControlDeCamara/fragment_shader.glsl");
+	shaderStr = loadShaderCode("fragment_shader.glsl");
 	shaderCode = shaderStr.c_str();
 
 	GLuint fragmentShader = compileShaderObject(shaderCode, GL_FRAGMENT_SHADER);

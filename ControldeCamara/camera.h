@@ -2,18 +2,18 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "math3d.h"
+#include "vector3D.h"
 
-const GLdouble SPEEDK = 0.1f, SPEEDC = 0.025f;
+const GLfloat SPEEDK = 0.1f, SPEEDC = 0.025f;
 
 struct CameraInfo
 {
-	Vector3 position = { 0.0f, 0.0f, 0.0f };
-	Vector3 target = { 0.0f, 0.0f ,0.0f };
-	Vector3 up = { 0.0f, 0.0f, 0.0f };
+	Vector3D<GLfloat> position;
+	Vector3D<GLfloat> target;
+	Vector3D<GLfloat> up;
 
-	double mouseX = 0.0;
-	double mouseY = 0.0;
+	float mouseX = 0.0;
+	float mouseY = 0.0;
 };
 
 #endif // CAMERA_H

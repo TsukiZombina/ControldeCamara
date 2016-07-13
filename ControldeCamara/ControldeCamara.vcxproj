@@ -21,11 +21,22 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="control.h" />
+    <ClInclude Include="curve.h" />
+    <ClInclude Include="curves.h" />
+    <ClInclude Include="hermite.h" />
+    <ClInclude Include="hermitecurve.h" />
     <ClInclude Include="math3d.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="perspective.h" />
+    <ClInclude Include="squarematrix.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="vector3D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="curve.cpp" />
+    <ClCompile Include="hermitecurve.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.glsl" />
