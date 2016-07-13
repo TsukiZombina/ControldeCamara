@@ -5,7 +5,6 @@
 #include <fstream>
 
 #include "util.h"
-#include "math3d.h"
 #include "camera.h"
 #include "control.h"
 #include "hermitecurve.h"

@@ -22,10 +22,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="control.h" />
     <ClInclude Include="curve.h" />
-    <ClInclude Include="curves.h" />
-    <ClInclude Include="hermite.h" />
     <ClInclude Include="hermitecurve.h" />
-    <ClInclude Include="math3d.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="perspective.h" />
     <ClInclude Include="squarematrix.h" />

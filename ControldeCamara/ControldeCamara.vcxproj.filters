@@ -21,13 +21,7 @@
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math3d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="control.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="curves.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="matrix.h">
@@ -43,9 +37,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hermitecurve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hermite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="perspective.h">
