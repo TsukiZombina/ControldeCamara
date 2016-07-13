@@ -78,18 +78,12 @@ int main()
 	camera.mouseX = WIDTH / HEIGHT;
 	camera.mouseY = WIDTH / HEIGHT;
 
-	/*for (int i = 0; i < 3; i++)
-	{
-		cout << camera.position(i) << " ";
-		cout << camera.target(i) << " ";
-		cout << camera.up(i) << " ";
-	}*/
-
 	glfwSetWindowUserPointer(window, (GLvoid*)&camera);
 
 	SquareMatrix<GLfloat, 4> model;
 	SquareMatrix<GLfloat, 4> view;
 	SquareMatrix<GLfloat, 4> projection;
+	SquareMatrix<GLfloat, 4> modelView;
 	model.Identity();
 	
 	MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, projection);
@@ -128,24 +122,15 @@ int main()
 		MakeView(camera.position, camera.target, camera.up, view);
 		
 		Matrix<GLfloat, 4, 4> modelViewProjection;
-		modelViewProjection = model * view * projection;
-		/*for (size_t i = 0; i < 4; i++)
+		modelViewProjection = projection * (model * view);
+		for (size_t i = 0; i < 4; i++)
 		{
 			for (size_t j = 0; j < 4; j++)
 			{
 				cout << modelViewProjection(i, j) << " ";
 			}
 			cout << endl;
-		}*/
-		/*for (size_t i = 0; i < 4; i++)
-		{
-			for (size_t j = 0; j < 4; j++)
-			{
-				mvp[i][j] = modelViewProjection(i, j);
-				cout << mvp[i][j] << " ";
-			}
-			cout << endl;
-		}*/
+		}
 
 		// Dibuja
 		glUseProgram(shaderProgram);
