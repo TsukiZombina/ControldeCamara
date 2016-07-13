@@ -8,6 +8,7 @@
 #include "math3d.h"
 #include "camera.h"
 #include "control.h"
+#include "hermitecurve.h"
 
 using std::cout;
 using std::endl;
@@ -51,8 +52,23 @@ int main()
 
 	GLuint shaderProgram = linkShaderProgram();
 
-	std::vector<GLfloat> vertices;
-	readVector(vertices, "vertices.txt");
+	Vector3D<float> P1(-0.5, -0.5, 0), P2(0.5, 0.5, 0), T1(1.0, -1.0, 0.0), T2(1.0, -1.0, 0.0);
+	HermiteCurve H;
+	H = HermiteCurve(P1, P2, T1, T2);
+	float vertices[707];
+	for (int i = 0; i <= 100; i++) {
+		Vector3D<double> fill = H(0.01 * i);
+		vertices[7 * i] = fill(0);
+		cout << fill(0) << " ";
+		vertices[7 * i + 1] = fill(1);
+		cout << fill(1) << " ";
+		vertices[7 * i + 2] = fill(2);
+		cout << fill(2) << endl;
+		vertices[7 * i + 3] = 1.0;
+		vertices[7 * i + 4] = 0.0;
+		vertices[7 * i + 5] = 0.0;
+		vertices[7 * i + 6] = 1.0;
+	}
 
 	CameraInfo camera;
 	camera.position = { 0.0f, 0.0f,  3.0f };
@@ -81,7 +97,7 @@ int main()
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -115,7 +131,7 @@ int main()
 
 		glBindVertexArray(vao);
 
-		glDrawArrays(GL_LINE_STRIP, 0, 12);
+		glDrawArrays(GL_LINE_STRIP, 0, 101);
 
 		glBindVertexArray(0);
 
