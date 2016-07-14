@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <GL/glew.h>
+#include <vector>
 #include <GLFW/glfw3.h>
 #include <fstream>
 
