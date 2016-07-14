@@ -41,9 +41,6 @@ public:
 	template<class T1, class T2>
 	friend Vector3D<T1> Cross(const Vector3D<T1>&, const Vector3D<T2>&);
 };
-extern template class Vector3D<int>;
-extern template class Vector3D<float>;
-extern template class Vector3D<double>;
 template<class T1, class T2>
 Vector3D<T1> CrossNormalize(const Vector3D<T1>&, const Vector3D<T2>&);
 

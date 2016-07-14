@@ -50,9 +50,6 @@
     <ClCompile Include="curve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vector3D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hermitecurve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

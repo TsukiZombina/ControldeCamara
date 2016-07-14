@@ -33,7 +33,6 @@
     <ClCompile Include="curve.cpp" />
     <ClCompile Include="hermitecurve.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.glsl" />
