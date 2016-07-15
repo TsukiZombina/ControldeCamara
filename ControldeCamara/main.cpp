@@ -121,7 +121,7 @@ int main()
 		MakeView(camera.position, camera.target, camera.up, view);
 		
 		Matrix<GLfloat, 4, 4> modelViewProjection;
-		modelViewProjection = projection * (model * view);
+		modelViewProjection = projection * (view * model);
 		for (size_t i = 0; i < 4; i++)
 		{
 			for (size_t j = 0; j < 4; j++)
