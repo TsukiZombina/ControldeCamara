@@ -1,10 +1,8 @@
 #pragma once
 #include<iostream>
 #include<stdexcept>
-
 #include "vector3D.h"
 
-using namespace std;
 #define row_s (row > 0 ? row : 1)
 #define column_s (column > 0 ? column : 1)
 template<class T, size_t row, size_t column>
@@ -116,7 +114,7 @@ void Matrix<T, row, column>::Identity()
 }
 
 template<class T, size_t row, size_t column>
-inline void Matrix<T, row, column>::MakeRotation(Vector3D<T>& axis, float angle)
+void Matrix<T, row, column>::MakeRotation(Vector3D<T>& axis, float angle)
 {
 	//Convert angle to radians
 	angle = angle * 3.1415926536f / 180;
@@ -138,7 +136,7 @@ inline void Matrix<T, row, column>::MakeRotation(Vector3D<T>& axis, float angle)
 }
 
 template<class T, size_t row, size_t column>
-inline void Matrix<T, row, column>::set(const size_t& i, const size_t& j, T element)
+void Matrix<T, row, column>::set(const size_t& i, const size_t& j, T element)
 {
 	if(i < row && j < column)
 		elements[i][j] = element;

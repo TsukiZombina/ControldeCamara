@@ -86,8 +86,6 @@ int main()
 	model.Identity();
 	
 	MakePerspective(45.0f, WIDTH / HEIGHT, 0.1f, 100.0f, projection);
-	
-	GLfloat mvp[4][4];
 
 	GLuint vao, vbo;
 
@@ -118,7 +116,9 @@ int main()
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		MakeView(camera.position, camera.target, camera.up, view);
+		Vector3D<float> newTarget;
+		newTarget = camera.position + camera.target;
+		MakeView(camera.position, newTarget, camera.up, view);
 		
 		Matrix<GLfloat, 4, 4> modelViewProjection;
 		modelViewProjection = projection * (view * model);
