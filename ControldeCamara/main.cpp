@@ -55,8 +55,8 @@ int main()
 	Vector3D<float> P1(-0.5, -0.5, 0), P2(0.5, 0.5, 0), T1(1.0,-1.0, 0.0), T2(1.0, -1.0, 0.0);
 	HermiteCurve H;
 	H = HermiteCurve(P1, P2, T1, T2);
-	float vertices[707];
-	for (int i = 0; i <= 100; i++) {
+	float vertices[700];
+	for (int i = 0; i <= 99; i++) {
 		Vector3D<double> fill = H(0.01 * i);
 		vertices[7 * i] = fill(0);
 		//cout << fill(0) << " ";
@@ -90,20 +90,20 @@ int main()
 	GLuint vao, vbo;
 
 	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
+		glGenBuffers(1, &vbo);
 
-	glBindVertexArray(vao);
+		glBindVertexArray(vao);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(1);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -139,7 +139,7 @@ int main()
 	
 		glBindVertexArray(vao);
 
-		glDrawArrays(GL_LINE_STRIP, 0, 101);
+		glDrawArrays(GL_LINE_STRIP, 0, 100);
 
 		glBindVertexArray(0);
 
